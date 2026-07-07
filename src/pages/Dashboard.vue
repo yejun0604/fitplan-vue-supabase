@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div>this is login page!</div>
+  <div>hi</div>
 </template>
 
 <style scoped>

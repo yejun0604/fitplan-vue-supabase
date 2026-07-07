@@ -8,25 +8,28 @@
   </header>
 
   <main>
-    <slot/>
+    <slot />
   </main>
 
   <footer>
     <small>Created by</small>
     <a
-  href="https://github.com/yejun0604"
-  target="_blank"
-  rel="noopener noreferrer"
->
-        <img alt="pfp" src="https://media.licdn.com/dms/image/v2/D5603AQGN1lCUA4RaeA/profile-displayphoto-shrink_200_200/B56ZSBbXgSHoAY-/0/1737338224168?e=1784764800&v=beta&t=Q-18zkHkT26vEEq4ln8iTTVFjCRq0fSKjJZDrclmNNs"/>
-        <p>Yejun Lee</p>
-        <i class="fa-brands fa-github"></i>
+      href="https://github.com/yejun0604"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        alt="pfp"
+        src="https://media.licdn.com/dms/image/v2/D5603AQGN1lCUA4RaeA/profile-displayphoto-shrink_200_200/B56ZSBbXgSHoAY-/0/1737338224168?e=1784764800&v=beta&t=Q-18zkHkT26vEEq4ln8iTTVFjCRq0fSKjJZDrclmNNs"
+      />
+      <p>Yejun Lee</p>
+      <i class="fa-brands fa-github"></i>
     </a>
   </footer>
 </template>
 
 <style scoped>
-    header,
+header,
 main,
 footer {
   width: 100%;
@@ -48,7 +51,7 @@ header h1 {
 }
 
 .text-gradient {
-  color: #14b8a6;
+  color: var(--color-primary);
 }
 
 main {
@@ -59,8 +62,7 @@ main {
 footer {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  color: #64748b;
-
+  color: var(--color-muted);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,12 +80,12 @@ footer a {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  color: #0f172a;
+  color: var(--color-text);
   text-decoration: none;
 }
 
 footer a:hover {
-  color: #14b8a6;
+  color: var(--color-primary);
 }
 
 footer img {

@@ -1,5 +1,5 @@
 <script setup>
-import workoutImage from '../../assets/workout.svg'
+import workoutImage from "../assets/workout.svg"
 </script>
 
 <template>
@@ -15,7 +15,9 @@ import workoutImage from '../../assets/workout.svg'
         one place.
       </p>
 
-      <RouterLink :to="{name: 'login'}" class="primary-button">Get Started</RouterLink>
+      <RouterLink :to="{ name: 'login' }" class="primary-button">
+        Get Started
+      </RouterLink>
     </div>
 
     <div class="welcome_image">
@@ -30,6 +32,7 @@ import workoutImage from '../../assets/workout.svg'
 
 <style scoped>
 #welcome {
+  width: 100%;
   padding: 10rem 0;
   display: flex;
   align-items: center;
@@ -50,12 +53,12 @@ h1 {
   margin: 0;
   font-size: 4rem;
   line-height: 1.1;
-  color: #0f172a;
+  color: var(--color-text);
 }
 
 h1 span {
   display: block;
-  color: #14b8a6;
+  color: var(--color-primary);
 }
 
 p {
@@ -63,29 +66,32 @@ p {
   max-width: 520px;
   font-size: 1.15rem;
   line-height: 1.6;
-  color: #475569;
+  color: var(--color-muted);
 }
 
 .primary-button {
+  display: inline-block;
   padding: 0.9rem 1.5rem;
   border: none;
   border-radius: 12px;
-  background-color: #14b8a6;
+  background-color: var(--color-primary);
   color: white;
   font-size: 1rem;
   font-weight: 700;
-   text-decoration: none;
+  text-decoration: none;
   cursor: pointer;
-  transition: background-color .2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .primary-button:hover {
-  background-color: #0f766e;
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
 }
 
 .workout_image {
   width: 100%;
   max-width: 420px;
+  display: block;
 }
 
 /* From 924px and below */
