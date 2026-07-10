@@ -13,12 +13,18 @@ defineProps({
   }
 })
 
-const isOpen = ref(false); 
+const isOpen = ref(false)
 
-  function toggleDropdown() {
-    isOpen.value = !isOpen.value
-    console.log(isOpen.value)
+const isDeleting = ref(false)
+
+const deleteError = ref('')
+
+
+function toggleDropdown() {
+  isOpen.value = !isOpen.value
+  console.log(isOpen.value)
 }
+
 
 //Handle logout directly in ProfileMenu.vue
 async function handleLogout() {
@@ -31,6 +37,68 @@ async function handleLogout() {
 
   isOpen.value = false
   router.push('/login')
+}
+
+
+async function handleDeleteAccount() {
+
+  const confirmed = window.confirm(
+    'Delete your FitPlan account? This will permanently delete your account and all saved progress.'
+  )
+
+
+  if (!confirmed) {
+    return
+  }
+
+
+  isDeleting.value = true
+
+  deleteError.value = ''
+
+
+  const {
+    error
+  } = await supabase
+    .functions
+    .invoke(
+      'delete-account',
+      {
+        method: 'POST'
+      }
+    )
+
+
+  if (error) {
+
+    console.error(
+      'Failed to delete account:',
+      error
+    )
+
+
+    deleteError.value =
+      'Unable to delete your account. Please try again.'
+
+
+    isDeleting.value = false
+
+    return
+  }
+
+
+  await supabase
+    .auth
+    .signOut({
+      scope: 'local'
+    })
+
+
+  isOpen.value = false
+
+
+  router.replace('/')
+
 }
 
 </script>
@@ -53,8 +121,37 @@ async function handleLogout() {
 
     <div v-if="isOpen" class="profile-dropdown">
       <div class="dropdown-menu">
-          <button class="logout" type="button" @click="handleLogout">Logout</button>
-          <button class="delete-account" type="button" disabled>Delete account</button>
+
+          <button
+            class="logout"
+            type="button"
+            @click="handleLogout"
+          >
+            Logout
+          </button>
+
+          <button
+            class="delete-account"
+            type="button"
+            :disabled="isDeleting"
+            @click="handleDeleteAccount"
+          >
+
+            {{
+              isDeleting
+                ? 'Deleting account...'
+                : 'Delete account'
+            }}
+
+          </button>
+
+          <p
+            v-if="deleteError"
+            class="delete-error"
+          >
+            {{ deleteError }}
+          </p>
+
       </div>
     </div>
 
@@ -186,5 +283,15 @@ async function handleLogout() {
 .delete-account:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.delete-error {
+  margin: 0.25rem 0 0;
+
+  color: #dc2626;
+
+  font-size: 0.8rem;
+
+  line-height: 1.4;
 }
 </style>
