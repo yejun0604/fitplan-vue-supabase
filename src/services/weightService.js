@@ -128,6 +128,50 @@ export async function saveCheckInDay(
   }
 }
 
+export async function resetWeightProgress() {
+
+  const user = await getCurrentUser()
+
+
+  const {
+    error: deleteError
+  } = await supabase
+
+    .from('weight_entries')
+
+    .delete()
+
+    .eq('user_id', user.id)
+
+
+  if (deleteError) {
+    throw deleteError
+  }
+
+
+  const {
+    error: settingsError
+  } = await supabase
+
+    .from('weight_tracking_settings')
+
+    .upsert(
+      {
+        user_id: user.id,
+        check_in_day: 1
+      },
+      {
+        onConflict: 'user_id'
+      }
+    )
+
+
+  if (settingsError) {
+    throw settingsError
+  }
+
+}
+
 
 export async function addWeightEntry(
   weight
