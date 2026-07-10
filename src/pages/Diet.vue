@@ -7,6 +7,7 @@ import WeightChart from '../components/WeightChart.vue'
 import {
   addWeightEntry,
   getWeightTrackingData,
+  resetWeightProgress,
   saveCheckInDay
 } from '../services/weightService'
 
@@ -52,6 +53,8 @@ const weightEntries = ref([])
 const isLoading = ref(true)
 
 const isSaving = ref(false)
+
+const isResetting = ref(false)
 
 const message = ref('')
 
@@ -210,6 +213,62 @@ async function handleAddWeight() {
   } finally {
 
     isSaving.value = false
+
+  }
+
+}
+
+
+async function handleResetProgress() {
+
+  const confirmed = window.confirm(
+    'Reset all weight progress? This will permanently delete your weight entries and restart from Week 1.'
+  )
+
+
+  if (!confirmed) {
+    return
+  }
+
+
+  message.value = ''
+
+  errorMessage.value = ''
+
+  isResetting.value = true
+
+
+  try {
+
+    await resetWeightProgress()
+
+
+    weightEntries.value = []
+
+    checkInDay.value = 1
+
+    weight.value = ''
+
+
+    message.value =
+      'Your weight progress has been reset.'
+
+  } catch (error) {
+
+    console.error(
+      'Failed to reset weight progress:',
+      error
+    )
+
+
+    errorMessage.value =
+      error.message
+      ||
+      'Unable to reset your weight progress.'
+
+  } finally {
+
+    isResetting.value = false
 
   }
 
@@ -396,6 +455,8 @@ onMounted(
             :disabled="
               isSaving
               ||
+              isResetting
+              ||
               isComplete
             "
           >
@@ -406,6 +467,28 @@ onMounted(
                 : isSaving
                   ? 'Saving...'
                   : 'Add Weight'
+            }}
+
+          </button>
+
+
+          <button
+            class="reset-progress-button"
+            type="button"
+            :disabled="
+              isResetting
+              ||
+              isSaving
+              ||
+              completedWeeks === 0
+            "
+            @click="handleResetProgress"
+          >
+
+            {{
+              isResetting
+                ? 'Resetting...'
+                : 'Reset Progress'
             }}
 
           </button>
@@ -655,6 +738,31 @@ button:disabled {
   opacity: 0.5;
 
   cursor: not-allowed;
+}
+
+
+.reset-progress-button {
+  margin-top: 0;
+
+  border: 1px solid #d8dce3;
+
+  background-color: #ffffff;
+
+  color: #c0392b;
+}
+
+
+.reset-progress-button:hover {
+  border-color: #c0392b;
+
+  background-color: #fff7f6;
+}
+
+
+.reset-progress-button:disabled {
+  border-color: #d8dce3;
+
+  background-color: #ffffff;
 }
 
 
