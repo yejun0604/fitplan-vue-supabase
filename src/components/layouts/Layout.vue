@@ -1,10 +1,51 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import ProfileMenu from './ProfileMenu.vue'
+import { supabase } from '../../lib/supabase.js'
 
+const userEmail = ref(null)
+const isLoggedIn = ref(false)
+const isAuthReady = ref(false)
+
+let authSubscription = null
+
+const updateAuthState = (session) => {
+  userEmail.value = session?.user?.email ?? null
+  isLoggedIn.value = !!session?.user
+}
+
+onMounted(async () => {
+  const { data, error } = await supabase.auth.getSession()
+
+  if (error) {
+    console.error(error.message)
+  } else {
+    updateAuthState(data.session)
+  }
+
+  isAuthReady.value = true
+
+  const { data: authData } = supabase.auth.onAuthStateChange((_event, session) => {
+    updateAuthState(session)
+    isAuthReady.value = true
+  })
+
+  authSubscription = authData.subscription
+})
+
+onUnmounted(() => {
+  authSubscription?.unsubscribe()
+})
 </script>
 
 <template>
   <header>
     <h1 class="text-gradient">FitPlan</h1>
+
+    <ProfileMenu
+      v-if="isAuthReady && isLoggedIn"
+      :email="userEmail"
+    />
   </header>
 
   <main>
@@ -41,6 +82,10 @@ footer {
 header {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 header h1 {

@@ -1,0 +1,20 @@
+﻿routine_name,exercise_name,exercise_order,target_sets
+Push,Barbell Bench Press,1,4
+Push,Incline Barbell Bench Press,2,4
+Push,Decline Chest Press Machine,3,4
+Push,Dips,4,4
+Push,Cable Chest Fly,5,3
+Push,Cable Triceps Pushdown,6,4
+Push,Dumbbell Lateral Raise,7,3
+Pull,Lat Pulldown,1,4
+Pull,Single-Arm Cable Row,2,4
+Pull,T-Bar Row,3,4
+Pull,Underhand Cable Row,4,4
+Pull,Pull-Up,5,2
+Pull,Dumbbell Curl,6,4
+Legs,Leg Press,1,4
+Legs,Hack Squat,2,4
+Legs,Leg Extension,3,4
+Legs,Leg Curl,4,4
+Legs,Hip Adduction Machine,5,4
+Legs,Calf Raise,6,4
